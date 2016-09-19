@@ -42,9 +42,18 @@ class App extends Component {
       filteredtasks = filteredtasks.filter(task => !task.checked)
     }
 
-    return filteredtasks.map((task) => (
-      <Task key={task._id} task={task} />
-    ));
+    return filteredtasks.map((task) => {
+      const currentUserId = this.props.currentUserId && this.props.currentUser._id;
+      const showPrivateButton = task.owner === currentUserId;
+
+      return(
+        <Task
+          key={task._id}
+          task={task}
+          showPrivateButton={showPrivateButton}
+        />
+      );
+    });
   }
 
 
@@ -86,7 +95,7 @@ class App extends Component {
 App.propTypes = {
   tasks: PropTypes.array.isRequired,
   incompleteCount: PropTypes.number.isRequired,
-  currentUser: PropTypes.object
+  currentUser: PropTypes.object,
 };
 
 export default createContainer(() =>{
